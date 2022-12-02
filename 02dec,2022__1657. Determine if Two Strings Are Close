@@ -46,7 +46,7 @@ Submissions
 
 ANSWER =>
 
-// MY Approach
+// MY Approach (Implemented on my own)
 class Solution {
 public:
     bool closeStrings(string word1, string word2) {
