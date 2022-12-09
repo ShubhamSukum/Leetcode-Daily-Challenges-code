@@ -34,7 +34,15 @@ Acceptance Rate
 74.4%
 
 ANSWER =>
+// optimised short code
 
+int maxAncestorDiff(TreeNode* r, int mn = 100000, int mx = 0) 
+{
+        return r ? max(maxAncestorDiff(r->left, min(mn, r->val), max(mx, r->val)),
+        maxAncestorDiff(r->right, min(mn, r->val), max(mx, r->val))) : mx - mn;
+}
+
+// long code
 class Solution {
 public:
     int funk(TreeNode *root,int miny,int maxy)
