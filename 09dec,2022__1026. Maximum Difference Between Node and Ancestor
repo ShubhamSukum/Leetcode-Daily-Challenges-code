@@ -35,6 +35,7 @@ Acceptance Rate
 
 ANSWER =>
 // optimised short code
+// credit => https://leetcode.com/lee215/
 
 int maxAncestorDiff(TreeNode* r, int mn = 100000, int mx = 0) 
 {
