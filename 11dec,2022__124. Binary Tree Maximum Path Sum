@@ -1,0 +1,87 @@
+124. Binary Tree Maximum Path Sum
+Hard
+
+A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.
+
+The path sum of a path is the sum of the node's values in the path.
+
+Given the root of a binary tree, return the maximum path sum of any non-empty path.
+
+Example 1:
+
+Input: root = [1,2,3]
+Output: 6
+Explanation: The optimal path is 2 -> 1 -> 3 with a path sum of 2 + 1 + 3 = 6.
+Example 2:
+
+
+Input: root = [-10,9,20,null,null,15,7]
+Output: 42
+Explanation: The optimal path is 15 -> 20 -> 7 with a path sum of 15 + 20 + 7 = 42.
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [1, 3 * 104].
+-1000 <= Node.val <= 1000
+Accepted
+883.6K
+Submissions
+2.3M
+Acceptance Rate
+38.6%
+ANSWER => 
+
+// optimised short code
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        int ans = INT_MIN;
+        getPathSum(root, ans);
+        return ans;
+    }
+
+    int getPathSum(TreeNode* node, int& ans) {
+        if (node == nullptr) {
+            return 0;
+        }
+
+        int lvalue = max(getPathSum(node->left, ans), 0);
+        int rvalue = max(getPathSum(node->right, ans), 0);
+        ans = max(ans, node->val + lvalue + rvalue);
+        return node->val + max(lvalue, rvalue);
+    }
+};
+
+// Siddhesh's Code
+class Solution {
+public:
+
+    // TC => O(n)   // n is number of nodes
+    // SC => O(h)   // h is height of tree
+    int dfs(TreeNode* node, int &maxPath)
+    {
+        int left = 0, right = 0;
+        if(node->left != NULL)
+            left = dfs(node->left, maxPath);
+        if(node->right != NULL)
+            right = dfs(node->right, maxPath);
+
+        // Max path considering only single node
+        int onlyNode = node->val;
+        // Max path for this node considering only one child
+        int oneChild = node->val + max(left, right);
+        // Max path for this node considereing both child
+        int bothChild = node->val + left + right;
+        maxPath = max(maxPath, max(onlyNode, max(oneChild, bothChild)));
+
+        // return the maximum connected path to this node(either one child or itself)
+        return max(oneChild, onlyNode);
+    }
+    int maxPathSum(TreeNode* root)
+    {
+        int maxPath = -1e8;
+        dfs(root, maxPath);
+        return maxPath;
+    }
+};
