@@ -1,0 +1,71 @@
+931. Minimum Falling Path Sum
+Medium
+
+Given an n x n array of integers matrix, return the minimum sum of any falling path through matrix.
+
+A falling path starts at any element in the first row and chooses the element in the next row that is either directly below or diagonally left/right. Specifically, the next element from position (row, col) will be (row + 1, col - 1), (row + 1, col), or (row + 1, col + 1).
+
+Example 1:
+
+
+Input: matrix = [[2,1,3],[6,5,4],[7,8,9]]
+Output: 13
+Explanation: There are two falling paths with a minimum sum as shown.
+Example 2:
+
+
+Input: matrix = [[-19,57],[-40,-5]]
+Output: -59
+Explanation: The falling path with a minimum sum is shown.
+ 
+
+Constraints:
+
+n == matrix.length == matrix[i].length
+1 <= n <= 100
+-100 <= matrix[i][j] <= 100
+Accepted
+180.2K
+Submissions
+261.8K
+Acceptance Rate
+68.8%
+
+ANSWER => 
+
+// Dynamic programming approach
+
+class Solution {
+public:
+    int dp[101][101];
+
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int m=matrix.size();
+        int n=matrix[0].size();
+
+        // first row will bw any how same!!
+        for(int i=0;i<m;i++) dp[0][i]=matrix[0][i];
+
+        // took 1 because we are starting with 2 row cuz first row is all ready filled
+        for(int i=1;i<n;i++) 
+        {
+            for(int j=0;j<m;j++)
+            {
+                int minu=INT_MAX;
+
+                // if upper right,left and just above block exist or not
+                if(i-1>=0) minu=min(minu,dp[i-1][j]);
+                if(i-1>=0 && j-1>=0) minu=min(minu,dp[i-1][j-1]);
+                if(i-1>=0 && j+1<m) minu=min(minu,dp[i-1][j+1]);
+
+                dp[i][j]=minu+matrix[i][j];
+            }
+        }
+
+        int ans=dp[n-1][0];
+        // Checking in last row which is the minimum
+        for(int i=1;i<n;i++) ans=min(ans,dp[n-1][i]);
+
+        return ans;
+    }
+};
