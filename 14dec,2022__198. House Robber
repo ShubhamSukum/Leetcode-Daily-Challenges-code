@@ -70,3 +70,75 @@ public:
         return solve(0,nums);
     }
 };
+
+class Solution {
+public:
+    // // MEMOIZATION
+    // // TC => O(n)
+    // // SC => O(n) + O(n)    // Stack space required
+    // int dfs(int i, vector<int> &nums, vector<int> &dp)
+    // {
+    //     if(i == 0)
+    //         return nums[0];
+
+    //     if(dp[i] != -1)
+    //         return dp[i];
+
+    //     int pick = nums[i];
+    //     if(i > 1)
+    //         pick += dfs(i-2, nums, dp);
+    //     int notPick = dfs(i-1, nums, dp);
+
+    //     dp[i] = max(pick, notPick); 
+    //     return max(pick, notPick);
+    // }
+    // int rob(vector<int>& nums)
+    // {
+    //     vector<int> dp(nums.size(), -1);
+    //     return dfs(nums.size()-1, nums, dp);
+    // }
+
+    // // TABULATION
+    // // TC => O(n)
+    // // SC => O(n)   // Stack space removed
+    // int rob(vector<int>& nums)
+    // {
+    //     int n = nums.size();
+    //     vector<int> dp(n);
+    //     dp[0] = nums[0];
+
+    //     for(int i=1;i<n;i++)
+    //     {
+    //         int pick = nums[i];
+    //         if(i > 1)
+    //             pick += dp[i-2];
+    //         int notPick = dp[i-1];
+
+    //         dp[i] = max(pick, notPick);
+    //     }
+
+    //     return dp[n-1];
+    // }
+
+    // SPACE OPTIMIZATION
+    // TC => O(n)
+    // SC => O(1)   // DP array removed
+    int rob(vector<int>& nums)
+    {
+        int n = nums.size();
+        int prevHouse = nums[0];
+        int prevPrevHouse;
+
+        for(int i=1;i<n;i++)
+        {
+            int pick = nums[i];
+            if(i > 1)
+                pick += prevPrevHouse;
+            int notPick = prevHouse;
+            prevPrevHouse = prevHouse;
+            prevHouse = max(pick, notPick);
+        }
+
+        return prevHouse;
+    }
+};
