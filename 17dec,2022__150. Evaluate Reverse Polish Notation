@@ -1,0 +1,228 @@
+150. Evaluate Reverse Polish Notation (stoi jaml nahi.. I mean athawl nahi)
+Medium
+
+Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+Valid operators are +, -, *, and /. Each operand may be an integer or another expression.
+
+Note that division between two integers should truncate toward zero.
+
+It is guaranteed that the given RPN expression is always valid. That means the expression would always evaluate to a result, and there will not be any division by zero operation.
+
+Example 1:
+
+Input: tokens = ["2","1","+","3","*"]
+Output: 9
+Explanation: ((2 + 1) * 3) = 9
+Example 2:
+
+Input: tokens = ["4","13","5","/","+"]
+Output: 6
+Explanation: (4 + (13 / 5)) = 6
+Example 3:
+
+Input: tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+Output: 22
+Explanation: ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+= ((10 * (6 / (12 * -11))) + 17) + 5
+= ((10 * (6 / -132)) + 17) + 5
+= ((10 * 0) + 17) + 5
+= (0 + 17) + 5
+= 17 + 5
+= 22
+ 
+
+Constraints:
+
+1 <= tokens.length <= 104
+tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
+Accepted
+558.5K
+Submissions
+1.3M
+Acceptance Rate
+44.4%
+
+ANSWER =>
+
+// Code with Alisha's solution (yt) // I just did long long int to fix it.
+
+class Solution {
+public:
+    long long int evalRPN(vector<string>& tokens) {
+        stack<long long int> s;
+
+        for(string x:tokens)
+        {
+            if(x=="+")
+            {
+                long long int a=s.top();
+                s.pop();
+                long long int b=s.top();
+                s.pop();
+                s.push(a+b);
+            }
+            else if(x=="-")
+            {
+                long long int a=s.top();
+                s.pop();
+                long long int b=s.top();
+                s.pop();
+                s.push(b-a);
+            }
+            else if(x=="*")
+            {
+                long long int a=s.top();
+                s.pop();
+                long long int b=s.top();
+                s.pop();
+                s.push(a*b);
+            }
+            else if(x=="/")
+            {
+                long long int a=s.top();
+                s.pop();
+                long long int b=s.top();
+                s.pop();
+                s.push(b/a);
+            }
+            else // if all if-else fail then its a number
+            {   // stoi karych hott phakt code chala asta maza hi :(
+                s.push(stoi(x));
+            }
+        }
+        
+        return s.top();
+    }
+};
+
+// short code with o(1) space // thode errors fix karche aahet tho..
+class Solution {
+public:
+    long long int evalRPN(vector<string>& tokens) {
+	long long int top = 0;
+	for(auto& t : tokens) 
+		if(t == "+" || t == "-" || t == "*" || t == "/") {
+			long long int op1 = stoi(tokens[--top]); 
+			long long int op2 = stoi(tokens[--top]); 
+			if(t == "+") op1 = op2 + op1;
+			if(t == "-") op1 = op2 - op1;
+			if(t == "/") op1 = op2 / op1;
+			if(t == "*") op1 = op2 * op1;   
+			tokens[top++] = to_string(op1);
+		}
+		else tokens[top++] = t;
+	return stoi(tokens[0]);
+}
+};
+// My previous mess stoi :)
+
+/*
+stack<int> s1;
+        int temp1,temp2,div,con;
+
+        for(auto x:tokens)
+        {// wow ethe or madhe hi problem yeto okay karan jr suppose * al tri true hoil ek condition ani if execute hoileven though it is *.Got it.
+            if(x!="+" || x!="-" || x!="*" || x!="/")      
+            {
+                con+=x; 
+                s1.push(x);
+            }
+            else if(x=="+")
+            {
+                temp1=s1.top();
+                con=(int)temp1;
+                s1.pop();
+                temp2=s1.top();
+                con=(int)temp2;
+                s1.pop();
+                temp1+=temp2;
+                s1.push(temp1);
+            }
+            else if(x=="-")
+            {
+                temp1=s1.top();
+                con=(int)temp1;
+                s1.pop();
+                temp2=s1.top();
+                con=(int)temp2;
+                s1.pop();
+                temp2-=temp1;
+                s1.push(temp2);
+            }
+            else if(x=="*")
+            {
+                temp1=s1.top();
+                con=(int)temp1;
+                s1.pop();
+                temp2=s1.top();
+                con=(int)temp2;
+                s1.pop();
+                temp1*=temp2;
+                s1.push(temp1);
+            }
+            else if(x=="/")
+            {
+                temp1=s1.top();
+                con=(int)temp1;
+                s1.pop();
+                temp2=s1.top();
+                con=(int)temp2;
+                s1.pop();
+                div=round(temp2/temp1);
+                s1.push(div);
+            }
+        }
+        return s1.top();
+*/
+
+// MY Final corrected solution
+
+class Solution {
+public:
+    long long int evalRPN(vector<string>& tokens) {
+        stack<long long int> s1;
+        long long int temp1,temp2,div,con;
+
+        for(string x:tokens)
+        {
+            if(x!="+" && x!="-" && x!="*" && x!="/") s1.push(stoi(x));
+            else if(x=="+")
+            {
+                temp1=s1.top();
+                s1.pop();
+                temp2=s1.top();
+                s1.pop();
+                temp1+=temp2;
+                s1.push(temp1);
+            }
+            else if(x=="-")
+            {
+                temp1=s1.top();
+                s1.pop();
+                temp2=s1.top();
+                s1.pop();
+                temp2-=temp1;
+                s1.push(temp2);
+            }
+            else if(x=="*")
+            {
+                temp1=s1.top();
+                s1.pop();
+                temp2=s1.top();
+                s1.pop();
+                temp1*=temp2;
+                s1.push(temp1);
+            }
+            else if(x=="/")
+            {
+                temp1=s1.top();
+                s1.pop();
+                temp2=s1.top();
+                s1.pop();
+                s1.push(temp2/temp1);
+            }
+        }
+        return s1.top();
+    }
+};
