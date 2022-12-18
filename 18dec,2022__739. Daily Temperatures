@@ -30,6 +30,7 @@ Acceptance Rate
 
 ANSWER =>
 
+// monotonic stack approach
 class Solution {
 public:
     vector<int> dailyTemperatures(vector<int>& temperatures) {
@@ -46,5 +47,45 @@ public:
         }
         
         return nge;
+    }
+};
+
+// My appraoch 47/48 test cases passed only last failed!! The 99999 testcase
+
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n=temperatures.size(),count,flag;
+        int maxy=*max_element(temperatures.begin(),temperatures.end());
+
+        for(int i=0;i<n;i++)
+        {
+            count=0;
+            if(temperatures[i]==maxy) 
+            {
+                temperatures[i]=0;
+                continue;
+            }
+            
+            if(i==n-1) 
+            {
+                temperatures[i]=0;
+                break;
+            }
+            flag=0;
+            for(int j=i+1;j<n;j++)
+            {
+                if(temperatures[i]>=temperatures[j]) count++;
+                else if(temperatures[i]<temperatures[j])
+                {
+                    flag=1;
+                    count++;
+                    break;
+                }
+            }
+            if(flag!=0) temperatures[i]=count;
+            else temperatures[i]=0;
+        }
+        return temperatures;
     }
 };
