@@ -41,7 +41,84 @@ Acceptance Rate
 51.4%
 
 ANSWER =>
+// leetcode official codes => https://leetcode.com/problems/find-if-path-exists-in-graph/solutions/2715942/find-if-path-exists-in-graph/?orderBy=most_votes
 
+// something new
+
+class UnionFind {
+    vector<int> root, rank;
+public:
+    UnionFind(int n) : root(n), rank(n, 1) {
+        iota(root.begin(), root.end(), 0);
+    }
+    int find(int x) {
+        if (x != root[x]) {
+            root[x] = find(root[x]);
+        }
+        return root[x];
+    }   
+    void join(int x, int y) {
+        int rootX = find(x), rootY = find(y);
+        
+        if (rootX != rootY) {
+            if (rank[rootX] > root[rootY]) {
+                swap(rootX, rootY);
+            }
+            // Modify the root of the smaller group as the root of the
+            // larger group, also increment the size of the larger group.
+            root[rootX] = rootY;
+            rank[rootY] += rank[rootX];
+        }
+    }
+};
+
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        UnionFind uf(n);
+
+        for (auto& edge : edges) {
+            uf.join(edge[0], edge[1]);
+        }
+        
+        return uf.find(source) == uf.find(destination);
+    }
+};
+
+// dfs
+
+class Solution {
+public:
+    bool dfs(unordered_map<int, vector<int>>& graph, vector<bool>& seen, int currNode, int destination) {
+        if (currNode == destination) {
+            return true;
+        }
+        if (!seen[currNode]) {
+            seen[currNode] = true;
+            for (auto& nextNode : graph[currNode]) {
+                if (dfs(graph, seen, nextNode, destination)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        unordered_map<int, vector<int>> graph;
+        for (auto& edge : edges) {
+            int a = edge[0], b = edge[1];
+            graph[a].push_back(b);
+            graph[b].push_back(a);
+        }
+
+        vector<bool> seen(n);
+        return dfs(graph, seen, source, destination);
+    }
+};
+
+
+// yt thinkcode's code (mine approach was also correct tho.. but i messed up coding)
 class Solution {
 public:
 
