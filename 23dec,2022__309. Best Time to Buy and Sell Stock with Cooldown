@@ -44,11 +44,11 @@ public:  // for more solution(optimised) refer => https://youtu.be/IGIe46xw3YY
         if(buy==1)  // 1 means we can buy and  0 means we can't buy
         {
             return dp[ind][buy]=max(g(ind+1,0,prices,dp)-prices[ind] , 0 + g(ind+1,1,prices,dp)); 
-            // 1) 0 + because we didn't buy anything we hold it and 1 because we can buy later as we idn't buy      
+        // 1) 0 + because we didn't buy anything we hold it and 1 because we can buy later as we idn't buy      
         }
 
-        return dp[ind][buy]=max(prices[ind]+g(ind+2,1,prices,dp),
-                    0+g(ind+1,0,prices,dp));   // ind+2 because we'll have a cooldown so.
+        return dp[ind][buy]=max(prices[ind]+g(ind+2,1,prices,dp),0+g(ind+1,0,prices,dp));   
+        // ind+2 because we'll have a cooldown so.
     }
     
     int maxProfit(vector<int>& prices) {
