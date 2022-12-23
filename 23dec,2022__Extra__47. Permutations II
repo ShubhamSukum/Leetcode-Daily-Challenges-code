@@ -1,0 +1,74 @@
+47. Permutations II
+Medium
+
+Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
+
+Example 1:
+
+Input: nums = [1,1,2]
+Output:
+[[1,1,2],
+ [1,2,1],
+ [2,1,1]]
+Example 2:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+ 
+Constraints:
+
+1 <= nums.length <= 8
+-10 <= nums[i] <= 10
+Accepted
+740.8K
+Submissions
+1.3M
+Acceptance Rate
+56.9%
+
+ANSWER =>
+
+// with STL 
+class Solution {
+public:
+     vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(begin(nums), end(nums));
+		
+        vector<vector<int>> output;
+        output.emplace_back(nums);
+        while (next_permutation(begin(nums), end(nums))) {
+            output.emplace_back(nums);
+        }
+        return output;
+    }
+};
+
+// without stl
+
+class Solution {
+public:
+    void lupy(int ind,set<vector<int>>& ans,vector<int>& nums)
+    {
+        if(ind==nums.size()) 
+        {
+            ans.insert(nums);
+            return;
+        }
+
+        for(int i=ind;i<nums.size();i++)
+        {
+            if(i>ind && nums[i]==nums[i-1]) continue;
+            swap(nums[ind],nums[i]);
+            lupy(ind+1,ans,nums);
+            swap(nums[ind],nums[i]);
+        }
+    }
+
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        set<vector<int>> ans;
+        lupy(0,ans,nums);   // 0 is ind here
+        vector<vector<int>> v1;
+        v1.assign(ans.begin(),ans.end());
+        return v1;
+    }
+};
