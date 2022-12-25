@@ -1,2 +1,2 @@
-# Leetcode-Daily-Challenges-code
+# Leetcode-Daily-Challenges-codes
 LEETCoduuu
