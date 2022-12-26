@@ -50,7 +50,6 @@ public:
 // Dp
 
 class Solution {
-    vector<int> memo;
     public:
     bool canJump(vector<int>& nums) {
         int n=nums.size();
