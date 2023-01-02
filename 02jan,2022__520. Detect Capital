@@ -31,6 +31,27 @@ Acceptance Rate
 
 ANSWER =>
 
+// modified previous code TC 100%
+
+class Solution {
+public:
+    bool detectCapitalUse(string word) {
+        bool ok;
+        int flag=0;
+
+        for(auto x:word) if(x-'A'>=0 && x-'A'<=25)flag++;
+
+        if(word.size()==1 || flag==word.size() || flag==0)return true;
+
+        if(word[0]-'A'>=0 && word[0]-'A'<=25)ok=true;
+        else ok=false;
+
+        for(int i=1;i<word.size();i++) if(word[i]-'A'<=25) ok=false;
+
+        return ok;
+    }
+};
+
 // my first solution  unoptimised
 class Solution {
 public:
