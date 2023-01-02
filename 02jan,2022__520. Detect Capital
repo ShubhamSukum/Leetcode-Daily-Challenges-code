@@ -31,6 +31,35 @@ Acceptance Rate
 
 ANSWER =>
 
+// Space optimised one
+
+class Solution {
+public:
+    bool detectCapitalUse(string w) {
+       
+      if(isupper(w[0])){
+          if(w.size()==1)return true;
+          if(isupper(w[1])){
+              for(char c:w){
+                  if(islower(c))return false;
+              }
+          }
+          else{
+              for(int i=1;i<w.size();i++){
+                  if(isupper(w[i]))return false;
+              }
+          }
+          return true;
+      }
+      else{
+          for(char c:w){
+              if(isupper(c))return false;
+          }
+          return true;
+      }
+    }
+};
+
 // modified previous code TC 100%
 
 class Solution {
