@@ -35,6 +35,23 @@ Acceptance Rate
 
 ANSWER => https://leetcode.com/problems/minimum-rounds-to-complete-all-tasks/solutions/2995603/simple-modulus-map-approach/?orderBy=most_votes
 
+// Lee's Solution
+
+class Solution {
+public:
+     int minimumRounds(vector<int>& A) {
+        unordered_map<int, int> count;
+        int res = 0, freq1;
+        for (int a: A)
+            ++count[a];
+        for (auto& it: count) {
+            if (it.second == 1) return -1;
+            res += (it.second + 2) / 3;
+        }
+        return res;
+    }
+};
+
 // My solution
 class Solution {
 public:
