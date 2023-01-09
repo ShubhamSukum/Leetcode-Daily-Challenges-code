@@ -1,0 +1,83 @@
+144. Binary Tree Preorder Traversal
+Easy
+
+Given the root of a binary tree, return the preorder traversal of its nodes' values.
+
+Example 1:
+
+
+Input: root = [1,null,2,3]
+Output: [1,2,3]
+Example 2:
+
+Input: root = []
+Output: []
+Example 3:
+
+Input: root = [1]
+Output: [1]
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 100].
+-100 <= Node.val <= 100
+ 
+
+Follow up: Recursive solution is trivial, could you do it iteratively?
+
+Accepted
+1.2M
+Submissions
+1.8M
+Acceptance Rate
+65.3%
+
+ANSWER =>
+
+// iterative stack
+
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ds;
+        stack<TreeNode*> st;
+
+        if(root==NULL)return ds;
+
+        TreeNode* tmp;
+        st.push(root);
+
+        while(!st.empty())
+        {
+            tmp=st.top();
+            st.pop();
+
+            ds.push_back(tmp->val);
+            if(tmp->right!=NULL) st.push(tmp->right);
+            if(tmp->left!=NULL) st.push(tmp->left);          
+        }
+        return ds;
+    }
+};
+
+// recursive Solution
+
+class Solution {
+public:
+
+    vector<int> dfs(TreeNode* root,vector<int>& ds)
+    {
+        if(root!=nullptr) ds.push_back(root->val);
+        else return ds;
+
+        dfs(root->left,ds);
+        dfs(root->right,ds);
+        return ds;
+    }
+
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ds;
+        return dfs(root,ds);
+    }
+};
