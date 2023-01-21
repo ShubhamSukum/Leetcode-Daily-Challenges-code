@@ -1,0 +1,72 @@
+93. Restore IP Addresses
+Medium
+
+A valid IP address consists of exactly four integers separated by single dots. Each integer is between 0 and 255 (inclusive) and cannot have leading zeros.
+
+For example, "0.1.2.201" and "192.168.1.1" are valid IP addresses, but "0.011.255.245", "192.168.1.312" and "192.168@1.1" are invalid IP addresses.
+Given a string s containing only digits, return all possible valid IP addresses that can be formed by inserting dots into s. You are not allowed to reorder or remove any digits in s. You may return the valid IP addresses in any order.
+
+Example 1:
+
+Input: s = "25525511135"
+Output: ["255.255.11.135","255.255.111.35"]
+Example 2:
+
+Input: s = "0000"
+Output: ["0.0.0.0"]
+Example 3:
+
+Input: s = "101023"
+Output: ["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+ 
+
+Constraints:
+
+1 <= s.length <= 20
+s consists of digits only.
+Accepted
+347.8K
+Submissions
+779.1K
+Acceptance Rate
+44.6%
+
+ANSWER =>
+
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> ans;
+        string ip;
+        dfs(s,0,0,ip,ans);
+        return ans;
+    }
+
+    void dfs(string s,int start,int step,string ip,vector<string>& ans)
+    {   
+        if(start==s.size() && step==4)
+        {
+            ip.erase(ip.end()-1);
+            ans.push_back(ip);
+            return;
+        }
+
+        if(s.size()-start > (4-step)*3) return;
+        if(s.size()-start < (4-step)) return;
+
+        int num=0;
+
+        for(int i=start;i<start+3;i++)
+        {
+            num=num*10+(s[i]-'0');
+
+            if(num<=255)
+            {
+                ip+=s[i];
+                dfs(s,i+1,step+1,ip+'.',ans);
+            }
+
+            if(num==0) break;
+        }
+    }
+};
